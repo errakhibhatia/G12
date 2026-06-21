@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All About Water — A Splashy Adventure</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root{
+    --deep:#1C7293;
+    --sea:#2E9BC4;
+    --sky:#7CC6F2;
+    --foam:#DDF3FC;
+    --sun:#FFD25A;
+    --leaf:#5BB85C;
+    --pop:#FF7A8A;
+    --violet:#9B8CFF;
+    --ink:#16384a;
+    --soft:#4A6A7A;
+    --shadow:rgba(22,56,74,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Nunito',sans-serif;color:var(--ink);line-height:1.55;
+    background:linear-gradient(180deg,#9AD7F2 0%,#BFE8F8 30%,#DDF3FC 60%,#EAF7E9 100%);
+    background-attachment:fixed;overflow-x:hidden;
+  }
+  .page{max-width:840px;margin:0 auto;padding:18px 16px 70px}
+
+  /* floating bubbles */
+  .bubble{position:fixed;border-radius:50%;background:rgba(255,255,255,.35);
+    border:2px solid rgba(255,255,255,.5);z-index:0;animation:rise linear infinite;pointer-events:none}
+  @keyframes rise{from{transform:translateY(110vh)}to{transform:translateY(-120px)}}
+  .page>*{position:relative;z-index:1}
+
+  /* hero */
+  .hero{text-align:center;padding:24px 14px 8px}
+  .drop{
+    width:110px;height:110px;margin:0 auto;position:relative;animation:bob 3s ease-in-out infinite;
+  }
+  .drop svg{width:100%;height:100%;filter:drop-shadow(0 6px 8px var(--shadow))}
+  @keyframes bob{50%{transform:translateY(-12px)}}
+  .hero h1{font-family:'Fredoka';font-weight:700;font-size:clamp(32px,8vw,56px);color:#fff;
+    text-shadow:0 3px 0 var(--sea),0 6px 14px var(--shadow);margin-top:6px}
+  .hero .tag{display:inline-block;margin-top:12px;background:#fff;color:var(--soft);font-weight:800;
+    padding:8px 20px;border-radius:30px;box-shadow:0 4px 0 var(--shadow);font-size:15px}
+
+  .progress{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:16px 0 4px}
+  .pdot{width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #aaccdd;opacity:.6}
+
+  .card{background:rgba(255,255,255,.97);border-radius:30px;padding:24px 22px;margin:20px 0;
+    box-shadow:0 8px 0 var(--shadow),0 16px 34px rgba(22,56,74,.14);border:4px solid #fff}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'Fredoka';font-weight:600;font-size:13px;
+    letter-spacing:.5px;color:#fff;padding:6px 16px;border-radius:20px;text-transform:uppercase;margin-bottom:12px}
+  .c-blue{background:var(--sea)}.c-green{background:var(--leaf)}.c-violet{background:var(--violet)}
+  .c-sun{background:#F0A93E}.c-pop{background:var(--pop)}.c-deep{background:var(--deep)}
+
+  h2{font-family:'Fredoka';font-weight:700;font-size:clamp(23px,5.4vw,33px);line-height:1.15;margin-bottom:6px}
+  h3{font-family:'Fredoka';font-weight:600;font-size:20px;margin:16px 0 6px;color:var(--soft)}
+  p{font-size:17px;margin:8px 0}.big{font-size:19px}
+  b{color:#0d2c3c}.pop{color:var(--pop);font-weight:800}
+  .emoji-xl{font-size:clamp(54px,15vw,96px);text-align:center;display:block;margin:6px 0}
+
+  .define{background:linear-gradient(135deg,#E2F4FF,#C9EBFB);border:3px dashed #6FC0E6;border-radius:20px;
+    padding:16px 18px;margin:14px 0;font-size:18px}
+  .define .word{font-family:'Fredoka';color:var(--deep);font-size:20px;display:block;margin-bottom:2px}
+
+  .fact{display:flex;gap:14px;align-items:flex-start;background:#EAF6FF;border-radius:18px;padding:14px 16px;
+    margin:12px 0;border-left:7px solid var(--sea)}
+  .fact .ic{font-size:30px;flex-shrink:0;line-height:1}
+  .fact.green{background:#EBFAEA;border-color:var(--leaf)}
+  .fact.pink{background:#FFEEF1;border-color:var(--pop)}
+  .fact.sun{background:#FFF6DC;border-color:var(--sun)}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  .tile{background:#fff;border:3px solid #E3F0F6;border-radius:20px;padding:16px;text-align:center;
+    box-shadow:0 4px 0 var(--shadow);transition:transform .15s}
+  .tile:hover{transform:translateY(-4px) rotate(-1deg)}
+  .tile .e{font-size:42px;display:block;margin-bottom:6px}
+  .tile b{font-family:'Fredoka';font-size:17px}.tile span{display:block;font-size:13.5px;color:var(--soft);margin-top:3px}
+
+  /* tap reveal */
+  .flip{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;font-family:'Nunito';
+    font-size:16px;background:#EAF6FF;border:3px solid #CDE8F6;border-radius:18px;padding:14px 16px;margin:10px 0;
+    box-shadow:0 4px 0 var(--shadow);transition:.15s}
+  .flip:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow)}
+  .flip .dot{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px}
+  .flip .ttl{font-family:'Fredoka';font-size:17px}
+  .flip .more{display:none;font-size:14.5px;color:var(--soft);margin-top:4px}
+  .flip.open{background:#EFFFF0;border-color:var(--leaf)}
+  .flip.open .more{display:block}
+
+  /* WATER CYCLE interactive */
+  .cycle{background:linear-gradient(180deg,#BFE8F8,#D7F0DC);border-radius:22px;padding:18px;margin:14px 0}
+  .cstep{display:flex;gap:14px;align-items:center;background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;
+    box-shadow:0 4px 0 var(--shadow);opacity:.4;transition:.35s;border:3px solid #fff}
+  .cstep.lit{opacity:1;border-color:var(--sun);transform:scale(1.02)}
+  .cstep .n{background:var(--sea);color:#fff;width:36px;height:36px;border-radius:50%;display:flex;
+    align-items:center;justify-content:center;font-family:'Fredoka';flex-shrink:0}
+  .cstep .e{font-size:34px}.cstep b{color:var(--deep)}
+  .cbtn{display:block;margin:6px auto 0;font-family:'Fredoka';font-size:17px;border:none;background:var(--sea);
+    color:#fff;padding:12px 26px;border-radius:30px;cursor:pointer;box-shadow:0 5px 0 var(--shadow)}
+  .cbtn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--shadow)}
+
+  /* three forms mini-interactive */
+  .forms{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media(max-width:560px){.forms{grid-template-columns:1fr}}
+  .form{border-radius:20px;padding:18px;text-align:center;color:#fff;box-shadow:0 5px 0 var(--shadow);cursor:pointer;transition:.15s}
+  .form:active{transform:translateY(3px);box-shadow:0 2px 0 var(--shadow)}
+  .form .e{font-size:48px;display:block}
+  .form b{font-family:'Fredoka';font-size:20px;display:block;margin-top:4px}
+  .form small{font-size:14px;opacity:.95}
+  .f-solid{background:#5BAEDC}.f-liquid{background:var(--sea)}.f-gas{background:#9CC9DE}
+
+  .remember{background:linear-gradient(135deg,#E2F4FF,#CDEBF9);border-radius:22px;padding:18px 20px;margin:14px 0;border:3px solid #8FCBE8}
+  .remember h3{color:var(--deep);margin-top:0}
+  .trick{background:#fff;border-radius:14px;padding:10px 14px;margin:8px 0;font-size:16px;box-shadow:0 3px 0 var(--shadow)}
+
+  .q{margin:18px 0;background:#F4FAFF;border-radius:18px;padding:16px;border:2px solid #DCEEFA}
+  .q .qq{font-family:'Fredoka';font-size:18px;margin-bottom:10px}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:3px solid #E3EDF3;border-radius:14px;
+    padding:12px 14px;margin:8px 0;font-family:'Nunito';font-size:16px;cursor:pointer;transition:.12s}
+  .opt:hover{border-color:var(--sea)}
+  .opt.right{background:#E4F8E3;border-color:var(--leaf)}
+  .opt.wrong{background:#FFE3E7;border-color:var(--pop)}
+  .qfb{font-weight:800;margin-top:8px;min-height:22px;font-size:15.5px}
+  .qfb.g{color:var(--leaf)}.qfb.b{color:var(--pop)}
+  .star-line{font-size:24px;text-align:center;margin:6px 0;font-family:'Fredoka';color:var(--deep)}
+  .footer{text-align:center;color:var(--soft);font-size:14px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="drop">
+      <svg viewBox="0 0 100 120">
+        <path d="M50 4 C50 4 88 60 88 84 A38 38 0 1 1 12 84 C12 60 50 4 50 4 Z" fill="#2E9BC4"/>
+        <ellipse cx="38" cy="74" rx="9" ry="11" fill="#fff" opacity=".55"/>
+        <circle cx="40" cy="88" r="7" fill="#fff"/><circle cx="62" cy="88" r="7" fill="#fff"/>
+        <circle cx="41" cy="90" r="3.4" fill="#16384a"/><circle cx="63" cy="90" r="3.4" fill="#16384a"/>
+        <path d="M40 102 Q51 112 62 102" stroke="#16384a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="30" cy="96" r="5" fill="#FF9Fb0" opacity=".6"/><circle cx="72" cy="96" r="5" fill="#FF9Fb0" opacity=".6"/>
+      </svg>
+    </div>
+    <h1>All About Water</h1>
+    <div class="tag">💧 A Splashy Adventure with Dewy · Class 2 &amp; 3</div>
+  </div>
+
+  <div class="progress" id="prog"></div>
+
+  <!-- INTRO -->
+  <div class="card">
+    <p class="big">Meet <span class="pop">Dewy</span>, a happy little water drop! 💧 Dewy is going to show you where rain comes from, the three magic forms of water, and the amazing water cycle. Let's splash in!</p>
+    <div class="fact"><span class="ic">🌍</span><span>Did you know? About <b>three-fourths</b> of our whole Earth is covered with water!</span></div>
+  </div>
+
+  <!-- WHAT IS WATER -->
+  <div class="card">
+    <span class="eyebrow c-blue">💧 Part 1 · What is Water?</span>
+    <h2>What is Water?</h2>
+    <span class="emoji-xl">🚰</span>
+    <p>Water is a <b>clear liquid</b>. It has <b>no colour, no smell and no taste</b>.</p>
+    <div class="define"><span class="word">✨ Big Word: WATER</span>A clear liquid that <b>all living things</b> — people, animals and plants — need to live.</div>
+    <h3>We use water every day for:</h3>
+    <div class="grid">
+      <div class="tile"><span class="e">🥤</span><b>Drinking</b></div>
+      <div class="tile"><span class="e">🍳</span><b>Cooking</b></div>
+      <div class="tile"><span class="e">🛁</span><b>Bathing</b></div>
+    </div>
+  </div>
+
+  <!-- WHY WATER -->
+  <div class="card">
+    <span class="eyebrow c-green">💚 Part 2 · Why We Need Water</span>
+    <h2>Why Do We Need Water?</h2>
+    <p class="big">Water is like a <b>superpower</b> for staying alive! 💪</p>
+    <div class="fact green"><span class="ic">🫀</span><span>We drink water to stay <b>healthy</b> and full of <b>energy</b>.</span></div>
+    <div class="fact green"><span class="ic">🌱</span><span>Animals and plants need water to <b>grow</b> too.</span></div>
+    <div class="fact green"><span class="ic">🐟</span><span>Many animals like fish <b>live</b> in water!</span></div>
+  </div>
+
+  <!-- THREE FORMS (fixed - all three!) -->
+  <div class="card">
+    <span class="eyebrow c-violet">🧊 Part 3 · Three Magic Forms</span>
+    <h2>The Three Magic Forms of Water</h2>
+    <p>Water can change into <b>three</b> forms. Tap each one! 👇</p>
+    <div class="forms">
+      <div class="form f-solid" onclick="this.querySelector('small').style.display='block'">
+        <span class="e">🧊</span><b>SOLID</b><small>Ice — hard &amp; cold</small>
+      </div>
+      <div class="form f-liquid" onclick="this.querySelector('small').style.display='block'">
+        <span class="e">💧</span><b>LIQUID</b><small>Water we drink &amp; pour</small>
+      </div>
+      <div class="form f-gas" onclick="this.querySelector('small').style.display='block'">
+        <span class="e">💨</span><b>GAS</b><small>Water vapour — floats in air, we can't see it!</small>
+      </div>
+    </div>
+    <div class="fact sun"><span class="ic">🔁</span><span>Ice can <b>melt</b> into water, and water can turn into <b>vapour</b>. Water loves to change its form!</span></div>
+  </div>
+
+  <!-- WHERE WATER COMES FROM -->
+  <div class="card">
+    <span class="eyebrow c-blue">🏔️ Part 4 · Where Water Comes From</span>
+    <h2>Where Does Water Come From?</h2>
+    <span class="emoji-xl">🏔️🌧️</span>
+    <p>Water comes from <b>rain</b> and <b>melting snow</b> on the mountains. It fills up <b>rivers, lakes, ponds and seas</b>. Some water sinks deep into the soil — we call that <b>groundwater</b>.</p>
+  </div>
+
+  <!-- SURFACE VS GROUND -->
+  <div class="card">
+    <span class="eyebrow c-deep">🌊 Part 5 · Two Kinds of Water</span>
+    <h2>Surface Water &amp; Groundwater</h2>
+    <p>Tap to sort the water! 👇</p>
+    <button class="flip" onclick="this.classList.toggle('open')">
+      <span class="dot" style="background:#CDEFFF">🏞️</span>
+      <span><span class="ttl">Surface Water</span><span class="more">Water we can SEE on top — rivers, lakes, ponds and oceans.</span></span>
+    </button>
+    <button class="flip" onclick="this.classList.toggle('open')">
+      <span class="dot" style="background:#E7DAC2">🕳️</span>
+      <span><span class="ttl">Groundwater</span><span class="more">Hidden water deep under the soil. We use <b>handpumps, wells and tube wells</b> to bring it up.</span></span>
+    </button>
+  </div>
+
+  <!-- WATER CYCLE (interactive stepper) -->
+  <div class="card">
+    <span class="eyebrow c-blue">🔄 Part 6 · The Water Cycle</span>
+    <h2>The Amazing Water Cycle</h2>
+    <p>Water never sits still — it keeps moving in a never-ending journey! Tap <b>Next Step</b> to follow Dewy. 💧</p>
+    <div class="cycle">
+      <div class="cstep" data-i="0"><span class="n">1</span><span class="e">☀️</span><span><b>Evaporation:</b> The warm Sun heats the water. It turns into <b>water vapour</b> and rises up into the sky.</span></div>
+      <div class="cstep" data-i="1"><span class="n">2</span><span class="e">☁️</span><span><b>Condensation:</b> High in the cold sky, vapour cools. Tiny drops join to make <b>fluffy clouds</b>.</span></div>
+      <div class="cstep" data-i="2"><span class="n">3</span><span class="e">🌧️</span><span><b>Rain (Precipitation):</b> The clouds get heavy and the drops fall down as <b>rain</b>, snow or hail.</span></div>
+      <div class="cstep" data-i="3"><span class="n">4</span><span class="e">🌊</span><span><b>Collection:</b> Rain flows back into rivers, lakes and seas… then the Sun heats it again. Round and round!</span></div>
+    </div>
+    <button class="cbtn" id="cbtn">▶ Next Step</button>
+  </div>
+
+  <!-- KEEP CLEAN -->
+  <div class="card">
+    <span class="eyebrow c-pop">🧼 Part 7 · Keep Water Clean</span>
+    <h2>Keep Our Water Clean</h2>
+    <div class="fact pink"><span class="ic">💖</span><span><b>Clean water</b> keeps us healthy and strong.</span></div>
+    <div class="fact pink"><span class="ic">🚮</span><span>Throwing waste or bathing in rivers makes water <b>dirty</b>.</span></div>
+    <div class="fact pink"><span class="ic">🤒</span><span>Drinking dirty water can make us <b>ill</b> — so we must save and protect clean water!</span></div>
+  </div>
+
+  <!-- MEMORY -->
+  <div class="card">
+    <div class="remember">
+      <h3>🌟 Super Memory Tricks</h3>
+      <div class="trick">💧 Water is a <b>liquid</b> all living things need.</div>
+      <div class="trick">🧊 Three forms: <b>solid (ice), liquid (water), gas (vapour)</b>.</div>
+      <div class="trick">🏔️ Water comes from <b>rain, rivers, lakes &amp; groundwater</b>.</div>
+      <div class="trick">🔄 Water cycle: <b>Evaporation → Condensation → Rain → Collection</b>.</div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card">
+    <span class="eyebrow c-deep">🏆 Quiz Time!</span>
+    <h2>Be a Water Wizard</h2>
+    <p>Tap your answer and earn stars! ⭐</p>
+
+    <div class="q" data-correct="1">
+      <div class="qq">1. What heats the water during evaporation?</div>
+      <button class="opt">The Moon</button>
+      <button class="opt">The Sun</button>
+      <button class="opt">The wind</button>
+      <div class="qfb"></div>
+    </div>
+    <div class="q" data-correct="2">
+      <div class="qq">2. When water vapour cools and forms clouds, it is called…</div>
+      <button class="opt">Evaporation</button>
+      <button class="opt">Collection</button>
+      <button class="opt">Condensation</button>
+      <div class="qfb"></div>
+    </div>
+    <div class="q" data-correct="0">
+      <div class="qq">3. What is the correct order of the water cycle?</div>
+      <button class="opt">Evaporation → Condensation → Rain → Collection</button>
+      <button class="opt">Rain → Sun → Clouds → Vapour</button>
+      <button class="opt">Clouds → Rain → Sun → Vapour</button>
+      <div class="qfb"></div>
+    </div>
+    <div class="q" data-correct="1">
+      <div class="qq">4. A well is a source of…</div>
+      <button class="opt">Surface water</button>
+      <button class="opt">Groundwater</button>
+      <button class="opt">Rain water</button>
+      <div class="qfb"></div>
+    </div>
+    <div class="q" data-correct="2">
+      <div class="qq">5. Water vapour is the … form of water.</div>
+      <button class="opt">Solid</button>
+      <button class="opt">Liquid</button>
+      <button class="opt">Gas</button>
+      <div class="qfb"></div>
+    </div>
+
+    <div class="star-line" id="stars">⭐ Score: 0 / 5</div>
+  </div>
+
+  <div class="footer">🌈 Hooray! You're a Water Wizard now! Keep learning, little scientist! 💧</div>
+</div>
+
+<script>
+  // bubbles
+  for(let i=0;i<14;i++){
+    const b=document.createElement('div');b.className='bubble';
+    const s=8+Math.random()*26;b.style.width=b.style.height=s+'px';
+    b.style.left=Math.random()*100+'vw';
+    b.style.animationDuration=(9+Math.random()*12)+'s';
+    b.style.animationDelay=(-Math.random()*12)+'s';
+    document.body.appendChild(b);
+  }
+  // progress dots = number of cards
+  const cards=document.querySelectorAll('.card').length;
+  const prog=document.getElementById('prog');
+  for(let i=0;i<cards;i++){const d=document.createElement('div');d.className='pdot';prog.appendChild(d);}
+
+  // water cycle stepper
+  let step=0;
+  const csteps=document.querySelectorAll('.cstep');
+  const cbtn=document.getElementById('cbtn');
+  cbtn.onclick=()=>{
+    csteps.forEach(s=>s.classList.remove('lit'));
+    csteps[step].classList.add('lit');
+    step++;
+    if(step>=csteps.length){cbtn.textContent='🔁 Watch Again';step=0;}
+    else cbtn.textContent='▶ Next Step';
+  };
+
+  // quiz
+  let score=0;
+  document.querySelectorAll('.q').forEach(q=>{
+    const correct=+q.dataset.correct;
+    const opts=q.querySelectorAll('.opt');
+    const fb=q.querySelector('.qfb');
+    opts.forEach((o,i)=>{
+      o.onclick=()=>{
+        if(q.dataset.done)return;
+        q.dataset.done="1";
+        if(i===correct){o.classList.add('right');fb.textContent="🎉 Yes! Correct!";fb.className="qfb g";score++;}
+        else{o.classList.add('wrong');opts[correct].classList.add('right');
+          fb.textContent="Oops! The green one is right. 😊";fb.className="qfb b";}
+        document.getElementById('stars').textContent=`⭐ Score: ${score} / 5`;
+      };
+    });
+  });
+</script>
+</body>
+</html>
