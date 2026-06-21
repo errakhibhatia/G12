@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All About Air — A Sky Adventure</title>
+<style>
+  /* ===== Design tokens =====
+     Subject: AIR for little kids. Palette = a real sky from dawn to day.
+     Display face: Fredoka (rounded, friendly, balloon-like).
+     Body: Nunito (soft, very readable for early readers). */
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root{
+    --sky-top:#7CC6F2;
+    --sky-mid:#A9DDF7;
+    --sky-low:#DDF3FC;
+    --cloud:#FFFFFF;
+    --sun:#FFD25A;
+    --grass:#7FC97A;
+    --ink:#23404F;
+    --soft-ink:#4A6A7A;
+    --pop:#FF7A8A;     /* coral for highlights */
+    --leaf:#5BB85C;    /* correct/green */
+    --violet:#9B8CFF;  /* accent */
+    --shadow:rgba(35,64,79,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Nunito',sans-serif;color:var(--ink);
+    background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 28%,var(--sky-low) 60%,#EAF7E9 100%);
+    background-attachment:fixed;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  .page{max-width:840px;margin:0 auto;padding:18px 16px 70px}
+
+  /* floating clouds in the background */
+  .bgcloud{position:fixed;color:#fff;opacity:.5;font-size:70px;z-index:0;animation:drift linear infinite;pointer-events:none}
+  @keyframes drift{from{transform:translateX(-140px)}to{transform:translateX(110vw)}}
+
+  .page>*{position:relative;z-index:1}
+
+  /* ===== Hero ===== */
+  .hero{text-align:center;padding:26px 14px 10px}
+  .sun{
+    width:96px;height:96px;margin:0 auto 6px;border-radius:50%;
+    background:radial-gradient(circle at 40% 38%,#FFE48C,var(--sun));
+    box-shadow:0 0 0 10px rgba(255,210,90,.35),0 0 36px rgba(255,210,90,.7);
+    position:relative;animation:bob 3s ease-in-out infinite;
+  }
+  .sun::before,.sun::after{content:"";position:absolute;top:34px;width:14px;height:14px;border-radius:50%;background:#5a4a1e}
+  .sun::before{left:30px}.sun::after{right:30px}
+  .smile{position:absolute;left:50%;top:52px;transform:translateX(-50%);width:34px;height:18px;
+    border:0 solid #5a4a1e;border-bottom:5px solid #5a4a1e;border-radius:0 0 40px 40px}
+  @keyframes bob{50%{transform:translateY(-10px)}}
+  .hero h1{
+    font-family:'Fredoka',sans-serif;font-weight:700;
+    font-size:clamp(34px,8vw,58px);color:#fff;line-height:1.05;
+    text-shadow:0 3px 0 #5aa9e0,0 6px 14px var(--shadow);
+    margin-top:8px;
+  }
+  .hero .tag{
+    display:inline-block;margin-top:12px;background:#fff;color:var(--soft-ink);
+    font-weight:800;padding:8px 20px;border-radius:30px;box-shadow:0 4px 0 var(--shadow);
+    font-size:15px;
+  }
+
+  /* ===== Section card ===== */
+  .card{
+    background:rgba(255,255,255,.96);border-radius:30px;padding:26px 22px;margin:22px 0;
+    box-shadow:0 8px 0 var(--shadow),0 16px 34px rgba(35,64,79,.14);
+    border:4px solid #fff;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;letter-spacing:.5px;
+    color:#fff;padding:6px 16px;border-radius:20px;text-transform:uppercase;margin-bottom:12px;
+  }
+  .c-air{background:var(--sky-top)}
+  .c-why{background:var(--leaf)}
+  .c-parts{background:var(--violet)}
+  .c-wind{background:#FF9F45}
+  .c-cock{background:var(--pop)}
+  .c-quiz{background:#5BAEDC}
+
+  h2{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(24px,5.4vw,34px);
+     line-height:1.15;margin-bottom:6px}
+  h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;margin:18px 0 6px;color:var(--soft-ink)}
+  p{font-size:17px;margin:8px 0}
+  .big{font-size:19px}
+  b{color:#15384a}
+  .pop{color:var(--pop);font-weight:800}
+
+  /* highlight definition box */
+  .define{
+    background:linear-gradient(135deg,#FFF6DC,#FFEFC2);
+    border:3px dashed #F2C94C;border-radius:20px;padding:16px 18px;margin:14px 0;
+    font-size:18px;
+  }
+  .define .word{font-family:'Fredoka',sans-serif;color:#C98A00;font-size:20px;display:block;margin-bottom:2px}
+
+  /* fun fact strip */
+  .fact{
+    display:flex;gap:14px;align-items:flex-start;background:#EAF6FF;border-radius:18px;
+    padding:14px 16px;margin:12px 0;border-left:7px solid var(--sky-top);
+  }
+  .fact .ic{font-size:30px;line-height:1;flex-shrink:0}
+  .fact.green{background:#EBFAEA;border-color:var(--leaf)}
+  .fact.pink{background:#FFEEF1;border-color:var(--pop)}
+  .fact.purp{background:#F1EEFF;border-color:var(--violet)}
+
+  /* uses grid */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+  @media(max-width:540px){.grid{grid-template-columns:1fr}}
+  .tile{
+    background:#fff;border:3px solid #EAF1F5;border-radius:20px;padding:16px;text-align:center;
+    box-shadow:0 4px 0 var(--shadow);transition:transform .15s;
+  }
+  .tile:hover{transform:translateY(-4px) rotate(-1deg)}
+  .tile .emoji{font-size:42px;display:block;margin-bottom:6px}
+  .tile b{font-family:'Fredoka',sans-serif;font-size:17px}
+  .tile span{display:block;font-size:14px;color:var(--soft-ink);margin-top:3px}
+
+  /* components of air — tap to reveal */
+  .pie{text-align:center;margin:10px 0 4px}
+  .partbtn{
+    display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
+    font-family:'Nunito';font-size:16px;background:#F6F2FF;border:3px solid #E4DBFF;border-radius:18px;
+    padding:14px 16px;margin:10px 0;box-shadow:0 4px 0 var(--shadow);transition:.15s;
+  }
+  .partbtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow)}
+  .partbtn .dot{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .partbtn .more{display:none;font-size:14.5px;color:var(--soft-ink);margin-top:4px}
+  .partbtn.open{background:#EFFff0;border-color:var(--leaf)}
+  .partbtn.open .more{display:block}
+  .partbtn .ttl{font-family:'Fredoka';font-size:17px}
+
+  /* weathercock interactive */
+  .cock-wrap{text-align:center;margin:14px 0}
+  .compass{
+    width:230px;height:230px;margin:6px auto;border-radius:50%;position:relative;
+    background:radial-gradient(circle,#fff,#EAF6FF);border:6px solid #FFD25A;
+    box-shadow:0 6px 0 var(--shadow);
+  }
+  .dir{position:absolute;font-family:'Fredoka';font-weight:700;color:var(--soft-ink);font-size:18px}
+  .dir.n{top:8px;left:50%;transform:translateX(-50%)}
+  .dir.s{bottom:8px;left:50%;transform:translateX(-50%)}
+  .dir.e{right:10px;top:50%;transform:translateY(-50%)}
+  .dir.w{left:10px;top:50%;transform:translateY(-50%)}
+  .rooster{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(0deg);
+    font-size:60px;transition:transform .8s cubic-bezier(.5,1.6,.5,1);transform-origin:center}
+  .windbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .wbtn{font-family:'Fredoka';font-size:15px;border:none;background:#FF9F45;color:#fff;padding:10px 16px;
+    border-radius:30px;cursor:pointer;box-shadow:0 4px 0 var(--shadow)}
+  .wbtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow)}
+  .wlabel{margin-top:10px;font-family:'Fredoka';font-size:18px;color:var(--pop);min-height:24px}
+
+  /* remember box */
+  .remember{
+    background:linear-gradient(135deg,#FFE9EE,#FFD9E2);border-radius:22px;padding:18px 20px;margin:14px 0;
+    border:3px solid #FFB3C4;
+  }
+  .remember h3{color:#C2185B;margin-top:0}
+  .trick{background:#fff;border-radius:14px;padding:10px 14px;margin:8px 0;font-size:16px;box-shadow:0 3px 0 var(--shadow)}
+
+  /* quiz */
+  .q{margin:18px 0;background:#F4FAFF;border-radius:18px;padding:16px;border:2px solid #DCEEFA}
+  .q .qq{font-family:'Fredoka';font-size:18px;margin-bottom:10px}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:3px solid #E3EDF3;border-radius:14px;
+    padding:12px 14px;margin:8px 0;font-family:'Nunito';font-size:16px;cursor:pointer;transition:.12s}
+  .opt:hover{border-color:var(--sky-top)}
+  .opt.right{background:#E4F8E3;border-color:var(--leaf)}
+  .opt.wrong{background:#FFE3E7;border-color:var(--pop)}
+  .qfb{font-weight:800;margin-top:8px;min-height:22px;font-size:15.5px}
+  .qfb.g{color:var(--leaf)}.qfb.b{color:var(--pop)}
+
+  .footer{text-align:center;color:var(--soft-ink);font-size:14px;margin-top:24px}
+  .star-line{font-size:26px;letter-spacing:6px;text-align:center;margin:6px 0}
+
+  details summary{cursor:pointer;font-family:'Fredoka';color:var(--soft-ink);font-size:16px;padding:6px 0}
+</style>
+</head>
+<body>
+<!-- drifting clouds -->
+<div class="bgcloud" style="top:12%;animation-duration:46s">☁️</div>
+<div class="bgcloud" style="top:32%;animation-duration:64s;font-size:50px">☁️</div>
+<div class="bgcloud" style="top:60%;animation-duration:54s;font-size:90px">☁️</div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="sun"><span class="smile"></span></div>
+    <h1>All About AIR</h1>
+    <div class="tag">🎈 A Sky Adventure for Super Kids · Class 2 &amp; 3</div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="card">
+    <p class="big">Take a big breath in… and let it out. <b>Whoosh!</b> 🌬️</p>
+    <p class="big">Do you know what you just breathed? It was <span class="pop">AIR!</span> Air is everywhere — but it likes to play hide-and-seek, because we cannot see it!</p>
+    <div class="fact"><span class="ic">🔍</span><span>We <b>cannot see</b> air, we <b>cannot smell</b> clean air, and we <b>cannot hold</b> it in our hands. But air is real — it is all around you right now!</span></div>
+  </div>
+
+  <!-- WHAT IS AIR -->
+  <div class="card">
+    <span class="eyebrow c-air">🌬️ Part 1 · What is Air?</span>
+    <h2>So… what <em>is</em> air?</h2>
+    <p>Air is a kind of <b>gas</b>. A gas has no shape and no colour — it spreads out to fill every empty space, like a balloon filling up.</p>
+    <div class="define">
+      <span class="word">✨ Big Word: AIR</span>
+      Air is the <b>invisible gas all around us</b> that living things need to breathe and stay alive.
+    </div>
+    <p>Even when a glass looks <b>empty</b>, it is not really empty… it is full of air! Want proof?</p>
+    <div class="fact green"><span class="ic">🥤</span><span><b>Try it at home:</b> Push an empty glass straight down into a tub of water, upside-down. The water cannot get in! Why? Because <b>air is already inside</b> the glass, holding the water out. Sneaky air! 😄</span></div>
+    <p>Air takes up space, air has weight, and moving air can <b>push things</b> — that is how it moves sailboats and flies kites!</p>
+  </div>
+
+  <!-- WHY AIR IS NEEDED -->
+  <div class="card">
+    <span class="eyebrow c-why">💚 Part 2 · Why do we need Air?</span>
+    <h2>Why is air so important?</h2>
+    <p class="big">Air is like a <b>superhero</b> that helps everyone, every single second!</p>
+
+    <h3>1. Air gives us life 🫁</h3>
+    <p>People, animals, birds, fish and even plants <b>need air to breathe</b>. We breathe in the good part of air to live. Without air, no living thing could survive — not even for a few minutes!</p>
+
+    <h3>2. Air does many helpful jobs 💪</h3>
+    <div class="grid">
+      <div class="tile"><span class="emoji">🧺</span><b>Dries clothes</b><span>Wind takes away the water</span></div>
+      <div class="tile"><span class="emoji">🪁</span><b>Flies kites</b><span>Air pushes the kite up high</span></div>
+      <div class="tile"><span class="emoji">⛵</span><b>Moves sailboats</b><span>Wind pushes the big sails</span></div>
+      <div class="tile"><span class="emoji">🌻</span><b>Carries seeds</b><span>So new plants can grow</span></div>
+      <div class="tile"><span class="emoji">🔥</span><b>Helps things burn</b><span>Fire needs air to stay lit</span></div>
+      <div class="tile"><span class="emoji">🎐</span><b>Makes sound travel</b><span>We hear through the air</span></div>
+    </div>
+
+    <div class="fact pink"><span class="ic">💨</span><span><b>Cool fact:</b> Plants give out the fresh air that we breathe, and we give out the air that plants like. We are best friends with trees! 🌳💕 So planting trees keeps our air clean.</span></div>
+  </div>
+
+  <!-- COMPONENTS OF AIR -->
+  <div class="card">
+    <span class="eyebrow c-parts">🧩 Part 3 · What is Air made of?</span>
+    <h2>The things hiding inside air</h2>
+    <p>Air is not just one thing — it is a <b>mixture</b> of many tiny things mixed together. Tap each one to learn its secret! 👇</p>
+
+    <button class="partbtn" onclick="this.classList.toggle('open')">
+      <span class="dot" style="background:#CDEFff">💨</span>
+      <span><span class="ttl">Gases (the biggest part)</span>
+      <span class="more">Air is mostly made of gases. The gas that helps us breathe is called <b>oxygen</b>. Plants breathe out a gas called <b>carbon dioxide</b>.</span></span>
+    </button>
+
+    <button class="partbtn" onclick="this.classList.toggle('open')">
+      <span class="dot" style="background:#CFE9FF">💧</span>
+      <span><span class="ttl">Water Vapour</span>
+      <span class="more">This is <b>water in the form of a gas</b>, floating in the air. We cannot see it. It is what makes the air feel wet on a rainy day!</span></span>
+    </button>
+
+    <button class="partbtn" onclick="this.classList.toggle('open')">
+      <span class="dot" style="background:#E7DAC2">🌫️</span>
+      <span><span class="ttl">Dust</span>
+      <span class="more">Tiny, tiny bits of dirt floating in the air. You can see them dancing when sunlight comes through a window! ✨</span></span>
+    </button>
+
+    <button class="partbtn" onclick="this.classList.toggle('open')">
+      <span class="dot" style="background:#D7D7D7">🏭</span>
+      <span><span class="ttl">Smoke</span>
+      <span class="more">Comes from fires, factories and vehicles. Too much smoke makes the air <b>dirty (impure)</b> and can make us cough and sick.</span></span>
+    </button>
+
+    <button class="partbtn" onclick="this.classList.toggle('open')">
+      <span class="dot" style="background:#F6C9D6">🦠</span>
+      <span><span class="ttl">Germs</span>
+      <span class="more">Teeny living things we cannot see. Breathing in too many germs can make us unwell, so we cover our nose when we sneeze! 🤧</span></span>
+    </button>
+
+    <div class="fact purp"><span class="ic">🧠</span><span><b>Clean air vs dirty air:</b> Smoke, too much dust, and germs make the air <b>impure</b> (dirty). Clean fresh air keeps us healthy and happy!</span></div>
+  </div>
+
+  <!-- WIND -->
+  <div class="card">
+    <span class="eyebrow c-wind">🍃 Part 4 · Moving Air = Wind</span>
+    <h2>When air moves, we call it WIND</h2>
+    <p>Air loves to move around. When air moves, it gets a special name!</p>
+    <div class="define">
+      <span class="word">🍃 Big Word: WIND</span>
+      <b>Wind is moving air.</b> We cannot see it, but we can <b>feel</b> it and watch it move leaves, flags and our hair!
+    </div>
+    <div class="grid">
+      <div class="tile"><span class="emoji">🌱</span><b>Breeze</b><span>A gentle, soft wind. Feels nice!</span></div>
+      <div class="tile"><span class="emoji">🌪️</span><b>Storm</b><span>A very strong, fast wind. Be careful!</span></div>
+    </div>
+    <p style="margin-top:14px">So how can we find out which way the wind is blowing? We use a clever helper… turn the page! 👉</p>
+  </div>
+
+  <!-- WEATHERCOCK -->
+  <div class="card">
+    <span class="eyebrow c-cock">🐓 Part 5 · The Weathercock</span>
+    <h2>Meet the Weathercock!</h2>
+    <p>A <b>weathercock</b> (also called a weather vane) is a tool shaped like a <b>rooster</b> 🐓 that sits high up on roofs. It spins around and points to show us <b>which direction the wind is blowing</b>.</p>
+    <div class="define">
+      <span class="word">🐓 Big Word: WEATHERCOCK</span>
+      A weathercock shows the <b>direction of the wind</b> — North, South, East or West. It does <b>not</b> tell speed!
+    </div>
+
+    <div class="cock-wrap">
+      <div class="compass">
+        <span class="dir n">N</span><span class="dir s">S</span>
+        <span class="dir e">E</span><span class="dir w">W</span>
+        <span class="rooster" id="rooster">🐓</span>
+      </div>
+      <div class="wlabel" id="wlabel">Tap a button to blow the wind! 💨</div>
+      <div class="windbtns">
+        <button class="wbtn" onclick="blow(0,'NORTH ⬆️')">Wind to North</button>
+        <button class="wbtn" onclick="blow(90,'EAST ➡️')">Wind to East</button>
+        <button class="wbtn" onclick="blow(180,'SOUTH ⬇️')">Wind to South</button>
+        <button class="wbtn" onclick="blow(270,'WEST ⬅️')">Wind to West</button>
+      </div>
+    </div>
+
+    <div class="fact"><span class="ic">🧭</span><span><b>Easy way to remember the directions:</b> <b>N</b>ever <b>E</b>at <b>S</b>oggy <b>W</b>orms! (North, East, South, West — going around like a clock 🕐)</span></div>
+  </div>
+
+  <!-- REMEMBER TRICKS -->
+  <div class="card">
+    <div class="remember">
+      <h3>🌟 Super Memory Tricks</h3>
+      <div class="trick">🌬️ <b>Air</b> = the invisible gas all around us.</div>
+      <div class="trick">🫁 We <b>need air to breathe</b> and stay alive.</div>
+      <div class="trick">🧩 Air is made of: <b>gases, water vapour, dust, smoke &amp; germs.</b></div>
+      <div class="trick">🍃 <b>Moving air = wind.</b> Gentle = breeze, strong = storm.</div>
+      <div class="trick">🐓 <b>Weathercock</b> shows the wind's <b>DIRECTION</b> (not its speed!).</div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card">
+    <span class="eyebrow c-quiz">🏆 Test Yourself!</span>
+    <h2>Quick Olympiad Quiz</h2>
+    <p>Tap the answer you think is right. Let's see those stars! ⭐</p>
+
+    <div class="q" data-correct="2">
+      <div class="qq">1. A weathercock is used to show the…</div>
+      <button class="opt">Colour of the wind</button>
+      <button class="opt">Speed of the wind</button>
+      <button class="opt">Direction of the wind</button>
+      <div class="qfb"></div>
+    </div>
+
+    <div class="q" data-correct="1">
+      <div class="qq">2. Which one is NOT a clean part of air?</div>
+      <button class="opt">Water vapour</button>
+      <button class="opt">Smoke</button>
+      <button class="opt">Gases</button>
+      <div class="qfb"></div>
+    </div>
+
+    <div class="q" data-correct="0">
+      <div class="qq">3. Moving air is called…</div>
+      <button class="opt">Wind</button>
+      <button class="opt">Rain</button>
+      <button class="opt">Soil</button>
+      <div class="qfb"></div>
+    </div>
+
+    <div class="q" data-correct="2">
+      <div class="qq">4. Why do living things need air?</div>
+      <button class="opt">To eat food</button>
+      <button class="opt">To sleep</button>
+      <button class="opt">To breathe and stay alive</button>
+      <div class="qfb"></div>
+    </div>
+
+    <div class="q" data-correct="1">
+      <div class="qq">5. A very strong, fast wind is called a…</div>
+      <button class="opt">Breeze</button>
+      <button class="opt">Storm</button>
+      <button class="opt">Whisper</button>
+      <div class="qfb"></div>
+    </div>
+
+    <div class="star-line" id="stars">⭐ Score: 0 / 5</div>
+  </div>
+
+  <div class="footer">
+    🌈 Great job, little scientist! You now know all about AIR. Keep breathing, keep learning! 🎈
+  </div>
+
+</div>
+
+<script>
+  // Weathercock spinner
+  function blow(deg, label){
+    document.getElementById('rooster').style.transform =
+      `translate(-50%,-50%) rotate(${deg}deg)`;
+    document.getElementById('wlabel').textContent = 'The wind blows to the ' + label;
+  }
+
+  // Quiz
+  let score = 0;
+  document.querySelectorAll('.q').forEach(q=>{
+    const correct = +q.dataset.correct;
+    const opts = q.querySelectorAll('.opt');
+    const fb = q.querySelector('.qfb');
+    opts.forEach((o,i)=>{
+      o.onclick = ()=>{
+        if(q.dataset.done) return;
+        q.dataset.done = "1";
+        if(i===correct){
+          o.classList.add('right');
+          fb.textContent = "🎉 Yes! That's right!";
+          fb.className = "qfb g";
+          score++;
+        }else{
+          o.classList.add('wrong');
+          opts[correct].classList.add('right');
+          fb.textContent = "Oops! The green one is correct. 😊";
+          fb.className = "qfb b";
+        }
+        document.getElementById('stars').textContent = `⭐ Score: ${score} / 5`;
+      };
+    });
+  });
+</script>
+</body>
+</html>
